@@ -13,9 +13,9 @@ namespace framework_authentication.Models
   
         }
 
-        public bool login()
+        public string login()
         {
-            return true;
+            return "token";
         }
 
         public bool logout(string token)
