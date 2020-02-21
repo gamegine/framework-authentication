@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace framework_authentication
+namespace framework_authentication.Models
 {
     public class Token
     {
@@ -13,6 +13,11 @@ namespace framework_authentication
         public Token()
         {
 
+        }
+
+        public Token(DateTime expireDate)
+        {
+            this.expireDate = expireDate;
         }
 
         public bool isValid()
@@ -28,6 +33,11 @@ namespace framework_authentication
         public string getToken()
         {
             return "";
+        }
+
+        public DateTime getExpirationDate()
+        {
+            return this.expireDate;
         }
 
     }
