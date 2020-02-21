@@ -26,5 +26,12 @@ namespace NUnitTest
             fifi.islog(token);
             Assert.AreEqual(fifi.islog(token), true);
         }
+        public void logout()
+        {
+            Assert.IsNotEmpty(token);
+            User fifi = new User();
+            fifi.logout(token);
+            Assert.AreEqual(fifi.islog(token), true);
+        }
     }
 }
