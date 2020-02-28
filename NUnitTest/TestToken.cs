@@ -17,17 +17,17 @@ namespace NUnitTest
         public void isValid()
         {
             Token toto = new Token(DateTime.Now.AddDays(1));
-            Assert.Equals(toto.isValid(), true);
+            Assert.AreEqual(toto.isValid(), true);
             Token toto2 = new Token(DateTime.Now.AddDays(-1));
-            Assert.Equals(toto2.isValid(), false);
+            Assert.AreEqual(toto2.isValid(), false);
         }
 
         [Test]
         public void delete()
         {
-            Token toto = new Token();
+            Token toto = new Token(DateTime.Now.AddDays(1));
             toto.delete();
-            Assert.Equals(toto.isValid(), false);
+            Assert.AreEqual(toto.isValid(), false);
         }
 
         [Test]
