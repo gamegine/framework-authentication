@@ -26,7 +26,7 @@ namespace framework_authentication.Models
 
         public bool isValid()
         {
-            if (this.expireDate > DateTime.Now && valid)
+            if (this.expireDate > DateTime.Now && this.valid)
             {
                 return true;
             }
@@ -37,6 +37,7 @@ namespace framework_authentication.Models
         public bool delete()
         {
             this.valid = false;
+            this.token = null;
             return true;
         }
 
