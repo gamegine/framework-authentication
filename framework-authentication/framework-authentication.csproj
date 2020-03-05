@@ -16,4 +16,7 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <Compile Remove="Models\Session.cs" />
+  </ItemGroup>
 </Project>
