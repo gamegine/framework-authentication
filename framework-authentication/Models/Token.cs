@@ -7,7 +7,7 @@ namespace framework_authentication.Models
 {
     public class Token
     {
-        private string token;
+        public string token;
         private DateTime expireDate;
         private bool valid;
 
@@ -15,6 +15,10 @@ namespace framework_authentication.Models
         {
             this.valid = true;
             this.token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        }
+        public Token(string token)
+        {
+            this.token = token;
         }
 
         public Token(DateTime expireDate)
