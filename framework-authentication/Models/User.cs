@@ -44,7 +44,14 @@ namespace framework_authentication.Models
         }
         public bool islog(string token)
         {
-            return true;
+            foreach (Token t in this.tokens)
+            {
+                if (t.isValid())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
