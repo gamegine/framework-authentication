@@ -15,19 +15,21 @@ namespace framework_authentication.Models
         public User(int id, string password)
         {
             //verifie dans la database
+            this.tokens = new List<Token>();
             this.id = id;
             this.password = password;
 
         }
 
-        public Boolean login(string password)
+        public string login(string password)
         {
             if(this.password == password)
             {
-                this.tokens.Add(new Token());
-                return true;
+                Token token = new Token();
+                this.tokens.Add(token);
+                return token.getToken();
             }
-            return false;
+            return null;
         }
 
         public bool logout(string token)
@@ -42,7 +44,7 @@ namespace framework_authentication.Models
             }
             return false;
         }
-        public bool islog(string token)
+        public bool islog()
         {
             foreach (Token t in this.tokens)
             {

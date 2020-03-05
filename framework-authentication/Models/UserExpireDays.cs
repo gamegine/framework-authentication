@@ -3,18 +3,19 @@ namespace framework_authentication.Models
 {
     public class UserExpireDays: User
     {
-        public UserExpireDays()
+        public UserExpireDays(int id, string password) : base (id, password)
         {
         }
 
-        public Boolean login(string password, int days)
+        public string login(string password, int days)
         {
             if (this.password == password)
             {
-                this.token.Add(new Token(DateTime.Now.AddDays(days)));
-                return true;
+                Token token = new Token(DateTime.Now.AddDays(days));
+                this.tokens.Add(token);
+                return token.getToken();
             }
-            return false;
+            return null;
         }
     }
 }

@@ -3,18 +3,19 @@ namespace framework_authentication.Models
 {
     public class UserExpireHours:User
     {
-        public UserExpireHours()
+        public UserExpireHours(int id, string password) : base(id, password)
         {
         }
 
-        public Boolean login(string password, int hours)
+        public string login(string password, int hours)
         {
             if (this.password == password)
             {
-                this.token.Add(new Token(DateTime.Now.AddHours(hours)));
-                return true;
+                Token token = new Token(DateTime.Now.AddHours(hours));
+                this.tokens.Add(token);
+                return token.getToken();
             }
-            return false;
+            return null;
         }
     }
 }
