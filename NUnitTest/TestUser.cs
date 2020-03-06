@@ -30,18 +30,20 @@ namespace NUnitTest
         [Test]
         public void isLog()
         {
-            Assert.IsNotEmpty(token);
-            User fifi = new User(1, "noura");
-            fifi.islog();
-            Assert.AreEqual(fifi.islog(), true);
-            fifi.logout("token");
+            UserExpireDays fifi = new UserExpireDays(1, "noura");
+            token = fifi.login("noura", 1);
+            UserExpireDays fofo = new UserExpireDays(2, "noura");
+            string toke = fofo.login("noura", -1);
+            Assert.IsNotEmpty(fifi.login("noura", 1));
+            Assert.AreEqual(fifi.islog(token), true);
+            Assert.AreEqual(fofo.islog(toke), false);
         }
         public void logout()
         {
             Assert.IsNotEmpty(token);
             User fifi = new User();
             fifi.logout(token);
-            //Assert.AreEqual(fifi.islog(token), true);
+            Assert.AreEqual(fifi.islog(token), false);
         }
     }
 }

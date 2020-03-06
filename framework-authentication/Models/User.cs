@@ -23,7 +23,7 @@ namespace framework_authentication.Models
 
         public string login(string password)
         {
-            if(this.password == password)
+            if (this.password == password)
             {
                 Token token = new Token();
                 this.tokens.Add(token);
@@ -34,8 +34,9 @@ namespace framework_authentication.Models
 
         public bool logout(string token)
         {
-            foreach(Token t in this.tokens){
-                if(t.token == token)
+            foreach (Token t in this.tokens)
+            {
+                if (t.token == token)
                 {
                     t.delete();
                     this.tokens.Remove(t);
@@ -44,16 +45,17 @@ namespace framework_authentication.Models
             }
             return false;
         }
-        public bool islog()
+        public bool islog(string token)
         {
             foreach (Token t in this.tokens)
             {
-                if (t.isValid())
+                if (t.token == token)
                 {
-                    return true;
+                    return t.isValid();
                 }
             }
             return false;
         }
+
     }
 }
