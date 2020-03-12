@@ -9,8 +9,8 @@ namespace framework_authentication.Models
     {
         private int id;
         public ICollection<Token> tokens { get; set; }
-        public Token login() => throw new NotImplementedException();
-        public bool logout() => throw new NotImplementedException();
-        public bool islog() => throw new NotImplementedException();
+        public Token Login() => throw new NotImplementedException();
+        public bool Logout(string token) => throw new NotImplementedException();
+        public bool Islog(string token) => throw new NotImplementedException();
     }
 }
