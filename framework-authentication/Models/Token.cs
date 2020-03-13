@@ -5,6 +5,10 @@ namespace framework_authentication.Models
     public class Token
     {
         /// <summary>
+        /// bdd id
+        /// </summary>
+        public int id { get; set; }
+        /// <summary>
         /// token string
         /// </summary>
         public string token { get; set; }
