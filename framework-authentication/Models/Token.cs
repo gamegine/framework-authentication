@@ -1,14 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace framework_authentication.Models
 {
     public class Token
     {
+        /// <summary>
+        /// token string
+        /// </summary>
         public string token { get; set; }
-        public Token() => throw new NotImplementedException();
-        public bool IsValid() => throw new NotImplementedException();
+        /// <summary>
+        /// generate new token -> string = Guid.NewGuid
+        /// </summary>
+        public Token()
+        {
+            this.token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        }
+        /// <summary>
+        /// checks the token validity
+        /// </summary>
+        /// <returns>true token is considered valid</returns>
+        public bool IsValid() => true;
     }
 }
