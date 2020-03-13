@@ -9,6 +9,7 @@ namespace NUnitTest
         public void Setup()
         {
         }
+
         [Test]
         public void Constructor()
         {
