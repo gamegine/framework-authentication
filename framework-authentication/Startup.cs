@@ -28,7 +28,7 @@ namespace framework_authentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            services.AddControllersWithViews();
             services.AddDbContext<framework_authenticationContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("framework_authenticationContext")));
         }
