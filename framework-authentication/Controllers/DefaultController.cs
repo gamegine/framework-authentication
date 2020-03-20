@@ -25,9 +25,9 @@ namespace framework_authentication.Controllers
         public ActionResult SignUp() => View();
 
         // POST: Login/Create
-        [HttpPost]
+        [HttpPost("/")]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Users U)
+        public ActionResult Connect()
         {
             Console.WriteLine("bravo");
             try
@@ -41,7 +41,23 @@ namespace framework_authentication.Controllers
                 return View();
             }
         }
-    }
 
+        [HttpPost("login")]
+        public ActionResult Connect(string email, string password)
+        {
+            Console.WriteLine(email);
+            Console.WriteLine(password);
+            return View();
+        }
+
+        [HttpPost("signup")]
+        public ActionResult Create(string email, string password, string confirm)
+        {
+            Console.WriteLine(email);
+            Console.WriteLine(password);
+            Console.WriteLine(confirm);
+            return View();
+        }
+    }
    
 }
