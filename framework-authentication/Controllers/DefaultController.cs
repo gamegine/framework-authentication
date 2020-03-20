@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using framework_authentication.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,23 +18,18 @@ namespace framework_authentication.Controllers
             return View();
         }
 
-        // GET: Default/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        [HttpGet("/login")]
+        public ActionResult Login() => View();
 
-        // GET: Default/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        [HttpGet("/signup")]
+        public ActionResult SignUp() => View();
 
-        // POST: Default/Create
+        // POST: Login/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Login(Users U)
         {
+            Console.WriteLine("bravo");
             try
             {
                 // TODO: Add insert logic here
@@ -45,51 +41,7 @@ namespace framework_authentication.Controllers
                 return View();
             }
         }
-
-        // GET: Default/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Default/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Default/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Default/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
+
+   
 }
