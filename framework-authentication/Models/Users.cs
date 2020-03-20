@@ -11,7 +11,7 @@ namespace framework_authentication.Models
         /// <summary>
         /// user session tokens list
         /// </summary>
-        public ICollection<Token> tokens { get; set; }
+        public virtual ICollection<Token> tokens { get; set; }
         /// <summary>
         /// login user -> add new token to users.tokens []
         /// </summary>
