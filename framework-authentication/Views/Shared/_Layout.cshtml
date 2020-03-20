@@ -22,8 +22,11 @@
                         My account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="login">Sign in</a>
-                        <a class="dropdown-item" href="signup">Sign up</a>
+                        @{
+                            @Html.ActionLink("Sign in", "Login", null, null, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Sign up", "SignUp", null, null, new { @class = "dropdown-item" })
+
+                        }
                     </div>
                 </li>
             </ul>
