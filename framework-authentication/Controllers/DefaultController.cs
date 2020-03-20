@@ -25,10 +25,20 @@ namespace framework_authentication.Controllers
         public ActionResult Index() => View();
 
         [HttpGet("/login")]
-        public ActionResult Login() => View();
+        public ActionResult Login(string redirectUrl = "http://www.google.com")
+        {
+            TempData["redirectUrl"] = redirectUrl;
+            return View();
+
+        }
 
         [HttpGet("/signup")]
-        public ActionResult SignUp() => View();
+        public ActionResult SignUp(string redirectUrl = "http://www.test.com")
+        {
+            TempData["redirectUrl"] = redirectUrl;
+            return View();
+
+        }
 
         // POST: Login/Create
         [HttpPost("/")]
@@ -58,20 +68,46 @@ namespace framework_authentication.Controllers
                 return NotFound();
             Token t = u.Login();
             if (t == null)
-                return NotFound();
+                return NotFound();  
             await _context.SaveChangesAsync();
             // return view t
             Response.Cookies.Append("token", t.token);
-            return View();
+            string data;
+
+            if (TempData["redirectUrl"] != null)
+            {
+                data = TempData["redirectUrl"] as string;
+                return Redirect(data);
+            }
+            return NotFound();
         }
 
         [HttpPost("signup")]
-        public ActionResult Create(string email, string password, string confirm)
+        public async Task<ActionResult> Create(int email, string password, string confirm)
         {
             Console.WriteLine(email);
             Console.WriteLine(password);
             Console.WriteLine(confirm);
-            return View();
+            Users users = new Users();
+            _context.Users.Add(users);
+           // return CreatedAtAction("GetUsers", new { id = users.id }, users);
+            var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
+            if (u == null)
+                return NotFound();
+            Token t = u.Login();
+            if (t == null)
+                return NotFound();
+            await _context.SaveChangesAsync();
+            // return view t
+            Response.Cookies.Append("token", t.token);
+            string data;
+
+            if (TempData["redirectUrl"] != null)
+            {
+                data = TempData["redirectUrl"] as string;
+                return Redirect(data);
+            }
+            return NotFound();
         }
     }
    
