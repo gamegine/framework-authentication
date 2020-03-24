@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using framework_authentication.Data;
 
 namespace framework_authentication
 {
@@ -26,6 +28,9 @@ namespace framework_authentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<framework_authenticationContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("framework_authenticationContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
