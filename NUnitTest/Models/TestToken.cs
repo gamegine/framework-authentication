@@ -1,7 +1,7 @@
 ﻿using framework_authentication.Models;
 using NUnit.Framework;
 
-namespace NUnitTest
+namespace NUnitTest.Models
 {
     class TestToken
     {
