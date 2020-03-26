@@ -8,7 +8,7 @@
     ViewData["Title"] = "Login";
 }
     <div class="container">
-        @using (Html.BeginForm("Connect", "TestGrid", FormMethod.Post))
+        @using (Html.BeginForm("Login", "TestGrid", FormMethod.Post))
         {
 
             <form method="post" action="Login">
@@ -24,6 +24,5 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         }
-        @Html.ActionLink("Sign up", "SignUp", null, null, new { @class = "btn-link" })
-
+        @Html.ActionLink("Sign up", "SignUp", new { redirectUrl = @ViewData["redirectUrl"] }, null)
     </div>

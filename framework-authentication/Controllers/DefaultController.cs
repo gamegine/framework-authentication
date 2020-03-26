@@ -27,40 +27,25 @@ namespace framework_authentication.Controllers
         [HttpGet("/login")]
         public ActionResult Login(string redirectUrl = "http://www.google.com")
         {
+            Console.WriteLine("get login");
+            ViewData["redirectUrl"] = redirectUrl;
             TempData["redirectUrl"] = redirectUrl;
             return View();
-
         }
 
         [HttpGet("/signup")]
         public ActionResult SignUp(string redirectUrl = "http://www.test.com")
         {
+            Console.WriteLine("get signup");
             TempData["redirectUrl"] = redirectUrl;
             return View();
-
-        }
-
-        // POST: Login/Create
-        [HttpPost("/")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Connect()
-        {
-            Console.WriteLine("bravo");
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> ConnectAsync(int email, string password)
+        public async Task<ActionResult> Login(int email, string password)
         {
+            Console.WriteLine("post login");
+            Console.WriteLine("r : " + TempData["redirectUrl"]);
             Console.WriteLine(email);
             Console.WriteLine(password);
             var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
@@ -79,35 +64,35 @@ namespace framework_authentication.Controllers
                 data = TempData["redirectUrl"] as string;
                 return Redirect(data);
             }
-            return NotFound();
+            return View();
         }
 
         [HttpPost("signup")]
-        public async Task<ActionResult> Create(int email, string password, string confirm)
+        public async Task<ActionResult> Signup(int email, string password, string confirm)
         {
+            Console.WriteLine("post signup");
             Console.WriteLine(email);
             Console.WriteLine(password);
             Console.WriteLine(confirm);
+
             Users users = new Users();
-            _context.Users.Add(users);
-           // return CreatedAtAction("GetUsers", new { id = users.id }, users);
-            var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
-            if (u == null)
-                return NotFound();
-            Token t = u.Login();
+            users.tokens = new List<Token>();
+            Token t = users.Login();
             if (t == null)
                 return NotFound();
+
+            Response.Cookies.Append("token", t.token);
+            _context.Users.Add(users);
             await _context.SaveChangesAsync();
             // return view t
-            Response.Cookies.Append("token", t.token);
-            string data;
 
+            string data;
             if (TempData["redirectUrl"] != null)
             {
                 data = TempData["redirectUrl"] as string;
                 return Redirect(data);
             }
-            return NotFound();
+            return View();
         }
     }
    
