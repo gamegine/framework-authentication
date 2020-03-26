@@ -20,10 +20,19 @@ namespace framework_authentication.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// get index page
+        /// </summary>
+        /// <returns>view index</returns>
         // GET: Default
         [HttpGet]
         public ActionResult Index() => View();
 
+        /// <summary>
+        /// get login page form
+        /// </summary>
+        /// <param name="redirectUrl">url de redrection apres conexion</param>
+        /// <returns>view login</returns>
         [HttpGet("/login")]
         public ActionResult Login(string redirectUrl = "http://www.google.com")
         {
@@ -34,6 +43,11 @@ namespace framework_authentication.Controllers
             return View();
         }
 
+        /// <summary>
+        /// inscription de l utilisateur
+        /// </summary>
+        /// <param name="redirectUrl">url de redrection apres inscription</param>
+        /// <returns>view signup</returns>
         [HttpGet("/signup")]
         public ActionResult SignUp(string redirectUrl = "http://www.test.com")
         {
@@ -43,12 +57,18 @@ namespace framework_authentication.Controllers
             return View();
         }
 
+        /// <summary>
+        /// post action login
+        /// connect l utilisateur
+        /// </summary>
+        /// <param name="email">identifiant de l utilisateur</param>
+        /// <param name="password"></param>
+        /// <returns>redirection ver la page <paramref name="redirectUrl"/> du formulaire </returns>
         [HttpPost("login")]
         public async Task<ActionResult> Login(int email, string password)
         {
             if (ReqLog)
                 Console.WriteLine("post login");
-            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
             //find user
             var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
             if (u == null)
@@ -59,6 +79,9 @@ namespace framework_authentication.Controllers
                 return NotFound();  
             await _context.SaveChangesAsync();
             //cookie
+            Response.Cookies.Append("token", t.token);
+            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
+            data += "?token=" + t.token; //cookie fail ?
             Uri myUri = new Uri(data);
             CookieOptions co = new CookieOptions() { Domain = myUri.Host };
             Response.Cookies.Append("token", t.token, co);
@@ -66,18 +89,28 @@ namespace framework_authentication.Controllers
             return Redirect(data);
         }
 
+        /// <summary>
+        /// post action signup
+        /// cree un utilisateur et le connect
+        /// </summary>
+        /// <param name="email">identifiant de l utilisateur</param>
+        /// <param name="password"></param>
+        /// <param name="confirm"></param>
+        /// <returns>redirection ver la page <paramref name="redirectUrl"/> du formulaire </returns>
         [HttpPost("signup")]
         public async Task<ActionResult> Signup(int email, string password, string confirm)
         {
             if (ReqLog)
                 Console.WriteLine("post signup");
-            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
             // new user & login -> token
             Users users = new Users() { tokens = new List<Token>() };
             Token t = users.Login<Token>();
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
             //cookie
+            Response.Cookies.Append("token", t.token);
+            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
+            data += "?token=" + t.token; //cookie fail ?
             Uri myUri = new Uri(data);
             CookieOptions co = new CookieOptions(){ Domain = myUri.Host };
             Response.Cookies.Append("token", t.token,co);
