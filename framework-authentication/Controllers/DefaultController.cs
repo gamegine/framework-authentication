@@ -13,8 +13,8 @@ namespace framework_authentication.Controllers
     [Route("/")]
     public class DefaultController : Controller
     {
+        const bool ReqLog = true;
         private readonly framework_authenticationContext _context;
-
         public DefaultController(framework_authenticationContext context)
         {
             _context = context;
@@ -27,7 +27,8 @@ namespace framework_authentication.Controllers
         [HttpGet("/login")]
         public ActionResult Login(string redirectUrl = "http://www.google.com")
         {
-            Console.WriteLine("get login");
+            if(ReqLog)
+                Console.WriteLine("get login");
             ViewData["redirectUrl"] = redirectUrl;
             TempData["redirectUrl"] = redirectUrl;
             return View();
@@ -36,7 +37,8 @@ namespace framework_authentication.Controllers
         [HttpGet("/signup")]
         public ActionResult SignUp(string redirectUrl = "http://www.test.com")
         {
-            Console.WriteLine("get signup");
+            if (ReqLog)
+                Console.WriteLine("get signup");
             TempData["redirectUrl"] = redirectUrl;
             return View();
         }
@@ -44,56 +46,43 @@ namespace framework_authentication.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(int email, string password)
         {
-            Console.WriteLine("post login");
-            Console.WriteLine("r : " + TempData["redirectUrl"]);
-            Console.WriteLine(email);
-            Console.WriteLine(password);
+            if (ReqLog)
+                Console.WriteLine("post login");
+            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
+            //find user
             var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
             if (u == null)
                 return NotFound();
+            //login -> get token
             Token t = u.Login();
             if (t == null)
                 return NotFound();  
             await _context.SaveChangesAsync();
-            // return view t
-            Response.Cookies.Append("token", t.token);
-            string data;
-
-            if (TempData["redirectUrl"] != null)
-            {
-                data = TempData["redirectUrl"] as string;
-                return Redirect(data);
-            }
-            return View();
+            //cookie
+            Uri myUri = new Uri(data);
+            CookieOptions co = new CookieOptions() { Domain = myUri.Host };
+            Response.Cookies.Append("token", t.token, co);
+            //final redirect to app
+            return Redirect(data);
         }
 
         [HttpPost("signup")]
         public async Task<ActionResult> Signup(int email, string password, string confirm)
         {
-            Console.WriteLine("post signup");
-            Console.WriteLine(email);
-            Console.WriteLine(password);
-            Console.WriteLine(confirm);
-
-            Users users = new Users();
-            users.tokens = new List<Token>();
+            if (ReqLog)
+                Console.WriteLine("post signup");
+            string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
+            // new user & login -> token
+            Users users = new Users() { tokens = new List<Token>() };
             Token t = users.Login();
-            if (t == null)
-                return NotFound();
-
-            Response.Cookies.Append("token", t.token);
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
-            // return view t
-
-            string data;
-            if (TempData["redirectUrl"] != null)
-            {
-                data = TempData["redirectUrl"] as string;
-                return Redirect(data);
-            }
-            return View();
+            //cookie
+            Uri myUri = new Uri(data);
+            CookieOptions co = new CookieOptions(){ Domain = myUri.Host };
+            Response.Cookies.Append("token", t.token,co);
+            //final redirect to app
+            return Redirect(data);
         }
     }
-   
 }
