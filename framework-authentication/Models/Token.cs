@@ -23,6 +23,6 @@ namespace framework_authentication.Models
         /// checks the token validity
         /// </summary>
         /// <returns>true token is considered valid</returns>
-        public bool IsValid() => true;
+        public virtual bool IsValid() => true;
     }
 }
