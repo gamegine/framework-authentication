@@ -13,12 +13,12 @@ namespace framework_authentication.Models
         /// </summary>
         public virtual ICollection<Token> tokens { get; set; }
         /// <summary>
-        /// login user -> add new token to users.tokens []
+        /// login<token>() -> add new token to users.tokens []
         /// </summary>
         /// <returns>new token generated</returns>
-        public Token Login()
+        public T Login<T>() where T : Token, new()
         {
-            Token t = new Token();
+            T t = new T();
             this.tokens.Add(t);
             return t;
         }

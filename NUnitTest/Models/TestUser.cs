@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace NUnitTest
+namespace NUnitTest.Models
 {
     public class TestUser
     {
@@ -14,12 +14,26 @@ namespace NUnitTest
         }
 
         [Test]
-        public void Login()
+        public void LoginToken()
         {
             Users fifi = new Users();
             fifi.tokens = new List<Token>();
-            fifi.Login();
+            Token gen = fifi.Login<Token>();
             Assert.AreEqual(fifi.tokens.Count, 1);
+            Assert.AreEqual(fifi.tokens.Contains(gen),true);
+            Assert.AreEqual(gen is Token, true);
+            Assert.AreEqual(gen is TokenExpireHours, false);
+        }
+        [Test]
+        public void LoginTokenExpire()
+        {
+            Users fifi = new Users();
+            fifi.tokens = new List<Token>();
+            Token gen = fifi.Login<TokenExpireHours>();
+            Assert.AreEqual(fifi.tokens.Count, 1);
+            Assert.AreEqual(fifi.tokens.Contains(gen), true);
+            Assert.AreEqual(gen is Token, true);
+            Assert.AreEqual(gen is TokenExpireHours, true);
         }
         [Test]
         public void IsLog()
