@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    ViewData["Title"] = "SignUp";
+}
+    <div class="container">
+        @using (Html.BeginForm("Signup", "TestGrid", FormMethod.Post))
+        {
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    @Html.TextBox("email", null, null, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    @Html.TextBox("password", null, null, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Confirm password</label>
+                    @Html.TextBox("confirm", null, null, new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        }
+        </div>
