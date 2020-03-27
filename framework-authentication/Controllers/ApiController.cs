@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using framework_authentication.Data;
 using framework_authentication.Models;
-using System.Net;
 
 namespace framework_authentication.Controllers
 {
@@ -15,8 +12,8 @@ namespace framework_authentication.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
+        const bool ReqLog = true;
         private readonly framework_authenticationContext _context;
-
         public ApiController(framework_authenticationContext context)
         {
             _context = context;
@@ -31,7 +28,8 @@ namespace framework_authentication.Controllers
         [HttpPost("verify")]
         public async Task<ActionResult<bool>> PostVerify(Token token)
         {
-            Console.WriteLine("verify : " + token);
+            if(ReqLog)
+                Console.WriteLine("post verify : " + token.token);
             var t = await _context.Token.Where(t => t.token == token.token).FirstOrDefaultAsync();
             if (t == null)
                 return false;
@@ -49,7 +47,8 @@ namespace framework_authentication.Controllers
         [HttpPost("logout")]
         public async Task<ActionResult<bool>> PostLogout(Token token)
         {
-            Console.WriteLine("logout : " + token);
+            if (ReqLog)
+                Console.WriteLine("logout : " + token.token);
             var t = await _context.Token.Where(t => t.token == token.token).FirstOrDefaultAsync();
             if (t == null)
                 return false;
