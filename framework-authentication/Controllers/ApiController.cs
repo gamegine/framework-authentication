@@ -26,16 +26,16 @@ namespace framework_authentication.Controllers
         /// <returns>bool token ok</returns>
         // POST: api/verify
         [HttpPost("verify")]
-        public async Task<ActionResult<bool>> PostVerify(Token token)
+        public async Task<ActionResult<ApiMsg>> PostVerify(Token token)
         {
             if(ReqLog)
                 Console.WriteLine("post verify : " + token.token);
             var t = await _context.Token.Where(t => t.token == token.token).FirstOrDefaultAsync();
             if (t == null)
-                return false;
+                return NotFound(new ApiMsg() { data = false , status = 400,msg = "token not fount"});
             if (!token.IsValid())
-                return false;
-            return true;
+                return NotFound(new ApiMsg() { data = false, status = 400, msg = "token not valid" });
+            return Ok(new ApiMsg() { data = true, status = 200, msg = "token is ok" });
         }
 
         // POST: api/logout
@@ -45,16 +45,16 @@ namespace framework_authentication.Controllers
         /// <param name="token">{token:"str token"}</param>
         /// <returns>bool logout fail / ok</returns>
         [HttpPost("logout")]
-        public async Task<ActionResult<bool>> PostLogout(Token token)
+        public async Task<ActionResult<ApiMsg>> PostLogout(Token token)
         {
             if (ReqLog)
                 Console.WriteLine("logout : " + token.token);
             var t = await _context.Token.Where(t => t.token == token.token).FirstOrDefaultAsync();
             if (t == null)
-                return false;
+                return NotFound(new ApiMsg() { data = false, status = 400, msg = "token not fount" });
             _context.Token.Remove(t);
             await _context.SaveChangesAsync();
-            return true;
+            return Ok(new ApiMsg() { data = false, status = 200, msg = "logout success" });
         }
     }
 }
