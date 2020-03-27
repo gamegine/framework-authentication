@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace framework_authentication.Models
 {
-    public class UsersByName : Users
+    public class UsersByEmail : Users
     {
         /// <summary>
         /// Identification of a user by mail or name
         /// </summary>
-        public string name { get; set; }
+        public string email { get; set; }
     }
 }
