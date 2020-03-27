@@ -11,23 +11,26 @@
         @using (Html.BeginForm("Login", "TestGrid", FormMethod.Post))
         {
 
-            <form method="post" action="Login">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    @Html.TextBox("email", null, null, new { @class = "form-control" })
+        <form method="post" action="Login">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                @Html.TextBox("email", null, null, new { @class = "form-control" })
 
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    @Html.TextBox("password", null, null, new { @class = "form-control" })
-                </div>
-                if(@ViewData["error"]){
-                <div>
-                    <p>@ViewData["error"]</p>
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                @Html.TextBox("password", null, null, new { @class = "form-control", @type = "password" })
+            </div>
+            @{
+                if (@ViewData["error"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewData["error"]
+                    </div>
                 }
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            }
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
         }
         @Html.ActionLink("Sign up", "SignUp", new { redirectUrl = @ViewData["redirectUrl"] }, null)
     </div>

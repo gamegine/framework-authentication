@@ -114,7 +114,11 @@ namespace framework_authentication.Controllers
         {
             if (ReqLog) Console.WriteLine("post signup");
             // passwd hash
-            //if (password != confirm) return NotFound();
+            if (password != confirm)
+            {
+                @ViewData["error"] = "les mot de passe ne sont pas identiques";
+                return View();
+            }
             // new user & login -> token
             UsersByPassword users = new UsersByPassword() { tokens = new List<Token>(), email = email};
             users.SetPassword(password);
