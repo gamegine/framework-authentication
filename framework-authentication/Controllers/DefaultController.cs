@@ -54,7 +54,7 @@ namespace framework_authentication.Controllers
             if (u == null)
                 return NotFound();
             //login -> get token
-            Token t = u.Login();
+            Token t = u.Login<Token>();
             if (t == null)
                 return NotFound();  
             await _context.SaveChangesAsync();
@@ -74,7 +74,7 @@ namespace framework_authentication.Controllers
             string data = TempData["redirectUrl"] != null ? TempData["redirectUrl"] as string : "/";
             // new user & login -> token
             Users users = new Users() { tokens = new List<Token>() };
-            Token t = users.Login();
+            Token t = users.Login<Token>();
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
             //cookie
