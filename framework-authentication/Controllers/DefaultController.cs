@@ -72,14 +72,23 @@ namespace framework_authentication.Controllers
             //find user
             var u = await _context.Users.Include(u => u.tokens).Where(u => u.email == email).FirstOrDefaultAsync();
             if (u == null)
-                return NotFound();
+            {
+                @ViewData["error"] = "user not found";
+                return View();
+            }
             //check passwd
             if (!u.VerifyPassword(password))
-                return NotFound();
+            {
+                @ViewData["error"] = "mot de passe incorrect";
+                return View();
+            }
             //login -> get token
             Token t = u.Login<Token>();
             if (t == null)
-                return NotFound();  
+            {
+                @ViewData["error"] = "token create error";
+                return View();
+            }
             await _context.SaveChangesAsync();
             //cookie
             Response.Cookies.Append("token", t.token);

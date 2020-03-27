@@ -21,6 +21,11 @@
                     <label for="exampleInputPassword1">Password</label>
                     @Html.TextBox("password", null, null, new { @class = "form-control" })
                 </div>
+                if(@ViewData["error"]){
+                <div>
+                    <p>@ViewData["error"]</p>
+                </div>
+                }
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         }
