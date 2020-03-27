@@ -5,6 +5,7 @@
     <RootNamespace>framework_authentication</RootNamespace>
     <UserSecretsId>df4a128b-408c-4688-8d85-10e173691f13</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
