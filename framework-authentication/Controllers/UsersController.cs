@@ -29,7 +29,8 @@ namespace framework_authentication.Controllers
             _context.Token.RemoveRange(_context.Token);
             for (int i = 0; i < 3; i++)
             {
-                UsersByEmail users = new UsersByEmail() { email = "email"+i};
+                UsersByPassword users = new UsersByPassword() { email = "email"+i};
+                users.SetPassword("p"+i);
                 users.tokens = new List<Token> { new Token() };
                 _context.Users.Add(users);
             }
@@ -87,7 +88,7 @@ namespace framework_authentication.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Users>> PostUsers(UsersByEmail users)
+        public async Task<ActionResult<Users>> PostUsers(UsersByPassword users)
         {
             _context.Users.Add(users);
             await _context.SaveChangesAsync();

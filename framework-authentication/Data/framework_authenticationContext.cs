@@ -14,7 +14,7 @@ namespace framework_authentication.Data
         {
         }
 
-        public DbSet<framework_authentication.Models.UsersByEmail> Users { get; set; }
+        public DbSet<framework_authentication.Models.UsersByPassword> Users { get; set; }
 
         public DbSet<framework_authentication.Models.Token> Token { get; set; }
     }

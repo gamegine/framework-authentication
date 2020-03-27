@@ -73,6 +73,9 @@ namespace framework_authentication.Controllers
             var u = await _context.Users.Include(u => u.tokens).Where(u => u.email == email).FirstOrDefaultAsync();
             if (u == null)
                 return NotFound();
+            //check passwd
+            if (!u.VerifyPassword(password))
+                return NotFound();
             //login -> get token
             Token t = u.Login<Token>();
             if (t == null)
@@ -100,10 +103,12 @@ namespace framework_authentication.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult> Signup(string email, string password, string confirm)
         {
-            if (ReqLog)
-                Console.WriteLine("post signup");
+            if (ReqLog) Console.WriteLine("post signup");
+            // passwd hash
+            //if (password != confirm) return NotFound();
             // new user & login -> token
-            UsersByEmail users = new UsersByEmail() { tokens = new List<Token>(), email = email };
+            UsersByPassword users = new UsersByPassword() { tokens = new List<Token>(), email = email};
+            users.SetPassword(password);
             Token t = users.Login<Token>();
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
