@@ -65,12 +65,12 @@ namespace framework_authentication.Controllers
         /// <param name="password"></param>
         /// <returns>redirection ver la page <paramref name="redirectUrl"/> du formulaire </returns>
         [HttpPost("login")]
-        public async Task<ActionResult> Login(int email, string password)
+        public async Task<ActionResult> Login(string email, string password)
         {
             if (ReqLog)
                 Console.WriteLine("post login");
             //find user
-            var u = await _context.Users.Include(u => u.tokens).Where(u => u.id == email).FirstOrDefaultAsync();
+            var u = await _context.Users.Include(u => u.tokens).Where(u => u.email == email).FirstOrDefaultAsync();
             if (u == null)
                 return NotFound();
             //login -> get token
@@ -98,12 +98,12 @@ namespace framework_authentication.Controllers
         /// <param name="confirm"></param>
         /// <returns>redirection ver la page <paramref name="redirectUrl"/> du formulaire </returns>
         [HttpPost("signup")]
-        public async Task<ActionResult> Signup(int email, string password, string confirm)
+        public async Task<ActionResult> Signup(string email, string password, string confirm)
         {
             if (ReqLog)
                 Console.WriteLine("post signup");
             // new user & login -> token
-            Users users = new Users() { tokens = new List<Token>() };
+            UsersByEmail users = new UsersByEmail() { tokens = new List<Token>(), email = email };
             Token t = users.Login<Token>();
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
